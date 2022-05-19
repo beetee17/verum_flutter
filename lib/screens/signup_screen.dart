@@ -1,7 +1,17 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:verum_flutter/resources/auth_methods.dart';
+import 'package:verum_flutter/screens/login_screen.dart';
 import 'package:verum_flutter/utils/colors.dart';
 import 'package:verum_flutter/widgets/text_field_input.dart';
+
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_layout_screen.dart';
+import '../responsive/web_screen_layout.dart';
+import '../utils/utils.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -15,7 +25,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _pwController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
-  
+  Uint8List? _selectedAvatar;
+  bool _isLoading = false;
+
   @override
   void dispose() {
     super.dispose();
@@ -23,6 +35,41 @@ class _SignupScreenState extends State<SignupScreen> {
     _pwController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
+  }
+
+  void signUp() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _pwController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        file: _selectedAvatar!);
+
+    if (res == 'success') {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResposiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout()
+          )
+        )
+      );
+    } else {
+      showSnackBar(res, context);
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+
+
+  }
+
+  void navigateToLoginScreen() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -51,24 +98,38 @@ class _SignupScreenState extends State<SignupScreen> {
               // Avatar selector
               Stack(
                 children: [
-                  CircleAvatar(
+                  _selectedAvatar != null 
+                  ? CircleAvatar(
                     radius: 64,
-                    backgroundImage: NetworkImage('placeholder'),
+                    backgroundImage: MemoryImage(_selectedAvatar!),
+                  )
+                  : const CircleAvatar(
+                    radius: 64,
+                    backgroundImage: NetworkImage('https://ucanr.edu/sites/4hfoundation/files/332696.jpg'),
                   ),
                   Positioned(
                     bottom: -10,
                     left: 80,
                     child: IconButton(
-                      onPressed: () {}, 
+                      onPressed: () async { 
+                        // For some reason we need to double-click to select image in iOS Simulator
+                        // https://stackoverflow.com/questions/71199859/platformexceptionmultiple-request-cancelled-by-a-second-request-null-null-i
+                        Uint8List img = await selectImage(ImageSource.gallery);
+                        setState(() {
+                          _selectedAvatar = img;
+                        });
+                      }, 
                       icon: const Icon(Icons.add_a_photo)
                     )
                   )
                 ],
               ),
 
+              const SizedBox(height: 24),
+
               // text fields
               TextFieldInput(
-                textEditingController: _bioController, 
+                textEditingController: _usernameController, 
                 hintText: "Username", 
                 textInputType: TextInputType.text
                 ),       
@@ -102,8 +163,18 @@ class _SignupScreenState extends State<SignupScreen> {
 
               // Signup button
               InkWell(
+                onTap: signUp,
                 child: Container(
-                  child: const Text('Signup'),
+                   child: _isLoading 
+                      ? const Center(
+                          child: CircularProgressIndicator(color: primaryColor)
+                        ) 
+                      : const Text(
+                          "Sign Up", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
                   width: double.infinity,
                   alignment: Alignment.center,
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -125,20 +196,20 @@ class _SignupScreenState extends State<SignupScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    child: const Text("Don't have an account? "),
+                    child: const Text("Already have an account? "),
                     padding: const EdgeInsets.symmetric(
                       vertical: 8
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLoginScreen,
                     child: Container(
                       child: const Text(
-                        "Sign up.", 
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold
+                          "Login.", 
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8
                       ),
