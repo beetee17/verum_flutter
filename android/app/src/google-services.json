@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "296337442652",
+    "project_id": "verum-d3504",
+    "storage_bucket": "verum-d3504.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:296337442652:android:04d360632c52dc4560a399",
+        "android_client_info": {
+          "package_name": "com.example.verum_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "296337442652-uc22371ebbhhrn4ficmtro0cq2scke9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArhLLXmEmDGr3aoODGlb2gxxW85xRZKq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "296337442652-uc22371ebbhhrn4ficmtro0cq2scke9b.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "296337442652-mqeep803oth0d2n19stgveagjv6cn4e6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.verumFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
