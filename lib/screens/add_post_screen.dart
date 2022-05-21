@@ -1,12 +1,14 @@
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:verum_flutter/models/user.dart';
+import 'package:verum_flutter/models/user.dart' as userModel;
 import 'package:verum_flutter/providers/user_provider.dart';
 import 'package:verum_flutter/resources/firestore_methods.dart';
 import 'package:verum_flutter/utils/colors.dart';
+import 'package:verum_flutter/utils/global_variables.dart';
 import 'package:verum_flutter/utils/utils.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -94,8 +96,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final User user = Provider.of<UserProvider>(context).getUser;
-    // The line above gives a null check error
+    final userModel.User user = Provider.of<UserProvider>(context).getUser;
 
     return _image == null
     ? Center(
@@ -137,7 +138,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CircleAvatar(
-                backgroundImage: NetworkImage('https://ucanr.edu/sites/4hfoundation/files/332696.jpg'),
+                backgroundImage: NetworkImage(user.avatarURL),
               ),
               SizedBox(
                 width: MediaQuery.of(context).size.width*0.45,

@@ -22,12 +22,22 @@ class User {
     'bio': bio,
   };
 
+  static User fromJson(Map<String, dynamic> data) {
+    return User(
+      email: data['email'],
+      username: data['username'],
+      bio: data['bio'],
+      avatarURL: data['avatarURL']
+    );
+  }
+
   static User fromSnapshot(DocumentSnapshot snapshot) {
     var data = snapshot.data() as Map<String, dynamic>;
     return User(
-        email: data['email'],
-        username: data['username'],
-        bio: data['bio'],
-        avatarURL: data['avatarURL']);
+      email: data['email'],
+      username: data['username'],
+      bio: data['bio'],
+      avatarURL: data['avatarURL']
+    );
   }
 }
