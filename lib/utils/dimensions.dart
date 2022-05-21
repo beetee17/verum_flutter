@@ -1,1 +1,0 @@
-const webScreenWidth = 600;

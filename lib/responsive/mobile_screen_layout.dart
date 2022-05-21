@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:verum_flutter/models/user.dart' as model;
 import 'package:verum_flutter/providers/user_provider.dart';
 import 'package:verum_flutter/utils/colors.dart';
+import 'package:verum_flutter/utils/global_variables.dart';
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
 
@@ -46,13 +47,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     return Scaffold(
       body: Center(
         child: PageView(
-          children: [
-            Text('Feed'),
-            Text('Search'),
-            Text('Add Post'),
-            Text('Notifications'),
-            Text('Profile'),
-          ],
+          children: homeScreenWidgets,
           physics: const NeverScrollableScrollPhysics(),
           controller: pageController,
           onPageChanged: onPageChanged,

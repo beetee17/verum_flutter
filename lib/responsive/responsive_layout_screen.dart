@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:verum_flutter/providers/user_provider.dart';
-import 'package:verum_flutter/utils/dimensions.dart';
+import 'package:verum_flutter/utils/global_variables.dart';
 
 class ResposiveLayout extends StatefulWidget {
   final Widget webScreenLayout;
